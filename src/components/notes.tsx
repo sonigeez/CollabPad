@@ -3,7 +3,7 @@ import Note from "./note";
 import { useCursors } from "@ably/spaces/dist/mjs/react";
 import { useEffect, useState } from "react";
 
-function Notes(props) {
+function Notes(props:any) {
   const { set } = useCursors();
   const [X, setX] = useState(0);
   const [Y, setY] = useState(0);
@@ -18,8 +18,8 @@ function Notes(props) {
         setY(cursors[cursor].cursorUpdate.position.y);
 
         setDimension({
-          height: cursors[cursor].cursorUpdate.data!.height as Number,
-          width: cursors[cursor].cursorUpdate.data!.width as Number,
+          height: cursors[cursor].cursorUpdate.data!.height as number,
+          width: cursors[cursor].cursorUpdate.data!.width as number,
         });
       }
     }
