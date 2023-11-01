@@ -1,0 +1,43 @@
+{
+  "name": "@ably-labs/vite-live-cursors",
+  "license": "Apache-2.0",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "dev2": "tsc --noEmit && vite build --emptyOutDir --watch",
+    "build": "tsc --noEmit && vite build --emptyOutDir",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@ably/spaces": "0.2.0",
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-brands-svg-icons": "^6.4.2",
+    "@fortawesome/free-regular-svg-icons": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@react-latest-ui/react-sticky-notes": "^0.2.6",
+    "ably": "1.2.45",
+    "mermaid": "^10.6.0",
+    "nanoid": "^5.0.1",
+    "random-words": "^2.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-draggable": "^4.4.6",
+    "react-floating-button-menu": "^2.1.1",
+    "react-rnd": "^10.4.1",
+    "socket.io-client": "^4.7.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@vitejs/plugin-react": "^4.1.0",
+    "autoprefixer": "^10.4.7",
+    "husky": "^8.0.3",
+    "postcss": "^8.4.14",
+    "tailwindcss": "^3.1.5",
+    "typescript": "5.2.2",
+    "vite": "^4.4.9"
+  }
+}
