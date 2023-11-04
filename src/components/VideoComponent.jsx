@@ -9,6 +9,8 @@ import example from "./example";
 import io from "socket.io-client";
 
 const socket = io.connect("https://collabpad-edeb76c1f5ec.herokuapp.com");
+const iceCandidateQueue = [];
+
 
 function VideoComponent(props) {
   const { set } = useCursors();
@@ -54,13 +56,19 @@ function VideoComponent(props) {
       remoteVideoRef.current.srcObject = event.streams[0];
     };
 
-    socket.on("offer", async (offer) => {
-      const remoteOffer = new RTCSessionDescription(offer);
-      await pcRef.current.setRemoteDescription(remoteOffer);
-      const answer = await pcRef.current.createAnswer();
-      await pcRef.current.setLocalDescription(answer);
-      socket.emit("answer", answer.toJSON());
-    });
+   socket.on("offer", async (offer) => {
+  const remoteOffer = new RTCSessionDescription(offer);
+  await pcRef.current.setRemoteDescription(remoteOffer);
+  // After setting the remote description, add queued ICE candidates.
+  while (iceCandidateQueue.length > 0) {
+    const candidate = iceCandidateQueue.shift();
+    await pcRef.current.addIceCandidate(new RTCIceCandidate(candidate));
+  }
+  const answer = await pcRef.current.createAnswer();
+  await pcRef.current.setLocalDescription(answer);
+  socket.emit("answer", answer.toJSON());
+});
+
 
     // channel.subscribe("offer", async (offer) => {
     //     if (isOfferReceived || isOfferSent) {
@@ -94,9 +102,14 @@ function VideoComponent(props) {
     //     }
     // });
 
-    socket.on("candidate", (candidate) => {
-      pcRef.current.addIceCandidate(new RTCIceCandidate(candidate));
-    });
+ socket.on("candidate", (candidate) => {
+  if (pcRef.current.remoteDescription) {
+    pcRef.current.addIceCandidate(new RTCIceCandidate(candidate));
+  } else {
+    // Queue the candidate if the remote description is not yet set.
+    iceCandidateQueue.push(candidate);
+  }
+});
 
     // channel.subscribe("candidate", (candidate) => {
     //     pcRef.current.addIceCandidate(new RTCIceCandidate(candidate.data));
